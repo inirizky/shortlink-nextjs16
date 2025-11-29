@@ -27,9 +27,11 @@ import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/hooks/use-auth"
+import { useEffect } from "react"
 
 const loginSchema = z.object({
-  username: z.string({ message: "Masukkan username yang valid" }),
+  username: z.string().min(3, { message: "Masukkan username yang valid" }),
   password: z.string().min(6, { message: "Minimal 6 karakter" }),
 })
 
@@ -39,33 +41,34 @@ export function LoginForm({ className,
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   })
 
   const router = useRouter()
+  const { signIn, error } = useAuth()
+
+
 
   const onSubmit = async (values: any) => {
-    console.log("Login data:", values)
-    // const res = await SignIn({
-    //   email: values.email,
-    //   password: values.password
-    // })
 
+    const res = await signIn(values.username, values.password)
 
-    console.log(res.success);
+    // toast.success("asik")
 
-
+    console.log(res);
 
     if (res.success) {
-      toast.success("Login successfully")
-      router.replace('/')
+      toast.success(res.message)
+      router.replace("/dashboard")
     } else {
       toast.error(res.message)
     }
 
+
   }
+
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
