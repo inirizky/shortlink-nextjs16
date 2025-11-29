@@ -1,0 +1,42 @@
+
+import { AppSidebar } from "@/components/app-sidebar"
+import {
+	SidebarInset,
+	SidebarProvider,
+} from "@/components/ui/sidebar"
+
+export default function DashboardLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
+
+	// const session = useSession()
+	// const router = useRouter()
+	// if (!session.data?.user) {
+	// 	router.push('/auth/login')
+	// }
+	return (
+
+		<SidebarProvider
+			style={
+				{
+					"--sidebar-width": "calc(var(--spacing) * 72)",
+					"--header-height": "calc(var(--spacing) * 12)",
+				} as React.CSSProperties
+			}
+		>
+			<AppSidebar variant="inset" />
+			<SidebarInset>
+				<div className="flex flex-1 flex-col">
+					<div className="@container/main flex flex-1 flex-col gap-2">
+						<div className="flex flex-col gap-4 md:gap-6  px-4 lg:px-3">
+							{children}
+						</div>
+					</div>
+				</div>
+
+			</SidebarInset>
+		</SidebarProvider>
+	)
+}
