@@ -23,12 +23,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-// import { SignIn } from "@/lib/auth/sign-in"
 import Link from "next/link"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/use-auth"
-import { useEffect } from "react"
 
 const loginSchema = z.object({
   username: z.string().min(3, { message: "Masukkan username yang valid" }),
@@ -93,7 +91,7 @@ export function LoginForm({ className,
                       <FormControl>
                         <Input
                           type="text"
-                          // placeholder="your username"
+                          placeholder="johndoe"
                           {...field}
                         />
                       </FormControl>

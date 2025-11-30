@@ -30,10 +30,14 @@ import {
 } from "@/components/ui/sidebar"
 // import { getSession } from "@/lib/auth/session"
 import ContentSidebar from "./sidebar-content"
+import { getSession } from "@/lib/session"
+import Link from "next/link"
 
 
 export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  // const session = await getSession()
+  const session = await getSession()
+  console.log(session);
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -43,17 +47,17 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link href="/">
                 <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">ERP.</span>
-              </a>
+                <span className="text-base font-semibold">Cuilin.</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <ContentSidebar />
       <SidebarFooter>
-        {/* <NavUser user={session?.user} /> */}
+        <NavUser user={session} />
       </SidebarFooter>
     </Sidebar>
   )

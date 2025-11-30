@@ -68,11 +68,11 @@ const data = {
 	//   },
 	// ],
 	navSecondary: [
-		{
-			title: "Settings",
-			url: "settings",
-			icon: IconSettings,
-		},
+		// {
+		// 	title: "Settings",
+		// 	url: "settings",
+		// 	icon: IconSettings,
+		// },
 		// {
 		//   title: "Get Help",
 		//   url: "#",

@@ -34,14 +34,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 	const signOut = async () => {
 		try {
 			// Panggil endpoint logout di server, server akan hapus cookie
-			await api.post("/logout"); // pastikan axios instance pakai withCredentials: true
+			await api.post("/users/logout"); // pastikan axios instance pakai withCredentials: true
 
 			// Update state frontend
 			setIsLoggedIn(false);
 			setUser(null);
 
 			// Redirect ke halaman login
-			router.replace("/login");
+			router.replace("/auth/login");
 		} catch (err) {
 			console.log("Logout gagal:", err);
 		}

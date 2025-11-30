@@ -9,7 +9,7 @@ export default async function SignupPage() {
   // }
   return (
 
-    <div className="w-full max-w-sm md:max-w-4xl">
+    <div className="w-full flex justify-center items-center h-screen p-4 md:p-0">
       <SignupForm />
     </div>
 

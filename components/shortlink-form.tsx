@@ -10,21 +10,44 @@ import { z } from "zod"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import api from "@/lib/api/axios"
 
+import { useState } from "react"
+import { useAuth } from "@/hooks/use-auth"
+import { useRouter } from "next/navigation"
+import { Switch } from "./ui/switch"
+import { Label } from "./ui/label"
+import { Links } from "@/types/link"
+
 export const createShortLinkSchema = z.object({
-  // slug: z.string().min(3),
-  url: z.string().min(3),
+  slug: z.string().optional(),
+  url: z.string().url("URL not valid"),
 
 });
 
-export default function ShortLinkForm() {
+export default function ShortLinkForm({
+  data,
+  onOpenChange,
+  fromHomepage = false
+}: {
+  data?: Links,
+  onOpenChange?: (open: boolean) => void,
+  fromHomepage?: boolean
+}) {
+  const isEditMode = !!data;
+  const submitButtonText = isEditMode ? "Update Link" : "Create New Link";
+  const [customSlug, setCustomSlug] = useState(false)
+  const { isLoggedIn } = useAuth()
   const form = useForm({
     resolver: zodResolver(createShortLinkSchema),
     defaultValues: {
-      url: "",
-      // slug: "",
+      url: data?.url || "",
+      slug: data?.slug || "",
 
     }
   })
+
+  const linkId = data?.id
+
+
   const queryClient = useQueryClient()
   const { mutate, isPending } = useMutation({
     mutationFn: (data: z.infer<typeof createShortLinkSchema>) => {
@@ -34,11 +57,40 @@ export default function ShortLinkForm() {
       toast.success("Link created successfully")
       queryClient.invalidateQueries({ queryKey: ['links'] });
       form.reset()
+      if (fromHomepage) {
+        router.replace('/dashboard')
+      }
+      onOpenChange?.(false)
+    },
+  })
+  const { mutate: edit } = useMutation({
+    mutationFn: (data: z.infer<typeof createShortLinkSchema>) => {
+      return api.put(`/links/${linkId}`, data)
+    },
+    onSuccess: async (data) => {
+      toast.success(data.data.message)
+
+      queryClient.invalidateQueries({ queryKey: ['links'] });
+      form.reset()
+      onOpenChange?.(false)
     },
   })
 
+
+
+  const router = useRouter()
   const onSubmit = (data: z.infer<typeof createShortLinkSchema>) => {
-    mutate(data)
+    if (!isLoggedIn) {
+      router.replace('/auth/login')
+      return
+    }
+
+    if (isEditMode) {
+      edit(data)
+    } else {
+      mutate(data)
+    }
+
   }
 
   const { isDirty, isSubmitting } = form.formState;
@@ -61,26 +113,34 @@ export default function ShortLinkForm() {
               </FormItem>
             )}
           />
-          {/* <FormField
+
+          {customSlug || data ? <FormField
             control={form.control}
             name="slug"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Custom ShortLink</FormLabel>
                 <FormControl>
-                  <Input placeholder="/short" {...field} />
+                  <Input placeholder="short" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
-          /> */}
+          /> : null}
         </div>
-        <Button
-          disabled={isPending || !isDirty}
-          type="submit"
-        >
-          {isPending ? "Loading..." : "Create New Link"}
-        </Button>
+        <div className="flex gap-4">
+
+          <Button
+            disabled={isSubmitting || !isDirty}
+            type="submit"
+          >
+            {isSubmitting ? "Loading..." : submitButtonText}
+          </Button>
+          {!data && <div className="flex items-center gap-2">
+            <Label htmlFor="airplane-mode">Custom link?</Label>
+            <Switch id="airplane-mode" onCheckedChange={setCustomSlug} defaultChecked={customSlug} />
+          </div>}
+        </div>
       </form>
     </Form>
   )

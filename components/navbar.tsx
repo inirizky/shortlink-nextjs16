@@ -1,32 +1,25 @@
 import Link from "next/link";
 import { NavUser } from "./nav-user";
-import { ModeToggle } from "./theme-toggle";
-import { getSession } from "@/lib/auth/session";
+import { ModeToggle } from "./theme-mode-toggle";
+import { getSession } from "@/lib/session";
+
 
 export default async function Navbar() {
 	const session = await getSession()
 	return (
-		<div className="border-b fixed top-0 md:top-5 left-1/2 -translate-x-1/2 z-50
-             container px-4 py-3 flex items-center justify-between md:rounded-full 
-            bg-zinc-100 dark:bg-zinc-900 backdrop-blur-sm max-w-5xl xl:max-w-7xl">
+		<div className="fixed top-0 z-50 w-full border-b bg-background/50 backdrop-blur">
+			<div className="container flex h-16 items-center justify-between max-w-7xl mx-auto px-4">
+				<div>
+					<Link href={'/'} className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-300 hover:opacity-80 transition-opacity">
+						Cuilin
+					</Link>
+				</div>
 
-			<div>
-				<Link href={'/'} className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-300">
-					Movie Playlist
-				</Link>
+				<div className="flex gap-2 items-center">
+					<ModeToggle />
+					<NavUser user={session} />
+				</div>
 			</div>
-
-			<div className="flex gap-2 items-center">
-
-				<ModeToggle />
-				<NavUser user={session?.user} />
-			</div>
-			{/* {!session.data?.user && <Button>Login</Button>}
-			{session.data?.user && <Button>Logout</Button>} */}
-			{/* 			<Search placeholder="Search" /> */}
-
-
-			{/* <NavUser session={session} /> ✅ session dilempar ke komponen */}
 		</div>
 
 	)

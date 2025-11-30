@@ -17,60 +17,58 @@ import {
 
 import Link from "next/link"
 import { Button } from "./ui/button";
+import { useAuth } from "@/hooks/use-auth";
+import { User } from "@/types/user";
 // import SignOutButton from "./signout-btn";
 
 type NavUserProps = {
 	session: any; // bisa ganti pakai tipe dari next-auth
 }
 
-export function NavUser({ user }) {
-	// console.log(user);
+export function NavUser({ user }: { user: User }) {
+	const { signOut } = useAuth()
 
 
 	return (
-		(user?.name ?
+		(user ?
 			(<DropdownMenu>
 				<DropdownMenuTrigger>
 					<div className="flex gap-2 items-center">
 
 						<Avatar className="h-10 w-10 rounded-full">
 							<AvatarImage
-								src={user.image ?? undefined}
-								alt={user.name ?? "User"}
+								src={undefined}
+								alt={"User"}
 							/>
 							<AvatarFallback className="rounded-lg">CN</AvatarFallback>
 						</Avatar>
 						<div className="flex flex-col items-start">
-							<span>{user.name}</span>
+							<p>{user.fullname}</p>
+							{/* <p className="text-xs text-muted-foreground">{user.username}</p> */}
 
 						</div>
 					</div>
 				</DropdownMenuTrigger>
 
 				<DropdownMenuContent
-					className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg "
+					className="w-[--radix-dropdown-menu-trigger-width] min-w-64 rounded-lg "
 					align="end"
 					sideOffset={4}
 				>
 					<DropdownMenuGroup>
 
-						{/* <DropdownMenuItem asChild>
-                        <Link href={`/user/${session.user.id}`}>Profile</Link>
-                    </DropdownMenuItem> */}
 						<DropdownMenuItem asChild>
 							<Link href={`/dashboard`}>Dashboard</Link>
 						</DropdownMenuItem>
 					</DropdownMenuGroup>
 					<DropdownMenuSeparator />
 					<DropdownMenuGroup>
-						{/* <DropdownMenuItem asChild>
-							<SignOutButton />
-						</DropdownMenuItem> */}
+						<DropdownMenuItem onClick={() => signOut()} >
+							Logout
+						</DropdownMenuItem>
 					</DropdownMenuGroup>
 					{/* <DropdownMenuGroup>
-                    <DropdownMenuItem asChild>
-                        <Link href="/settings/account">Watchlist</Link>
-                    </DropdownMenuItem>
+                   
                     <DropdownMenuItem>
                         <CreditCard />
                         Billing

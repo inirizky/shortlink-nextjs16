@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
 import { useAuth } from "@/hooks/use-auth"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 const signupSchema = z
   .object({
@@ -162,9 +163,9 @@ export function SignupForm({
 
                 <p className="text-center text-sm text-muted-foreground">
                   Already have an account?{" "}
-                  <a href="#" className="underline">
+                  <Link href="/auth/login" className="underline">
                     Sign in
-                  </a>
+                  </Link>
                 </p>
               </form>
             </Form>

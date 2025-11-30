@@ -6,6 +6,8 @@ export async function getSession() {
 	const token = cookieStore.get("token");
 
 	if (!token) {
+		console.log("hit");
+
 		return null;
 	}
 
@@ -14,10 +16,12 @@ export async function getSession() {
 		const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
 			method: "GET",
 			headers: {
-				Cookie: `token=${token.value}`, // Forward cookie ke backend
+				Cookie: `token=${token.value}`,
 			},
-			cache: "no-store", // Jangan cache, selalu fresh data
+			cache: "no-store",
 		});
+
+		console.log(response);
 
 		if (!response.ok) {
 			return null;
