@@ -41,7 +41,7 @@ Follow these steps to get the project running on your local machine.
 ### 1\. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/cuilin.git
+git clone https://github.com/inirizky/cuilin.git
 cd cuilin
 ```
 
@@ -63,10 +63,10 @@ Create a `.env.local` file in the root directory of the project and add the foll
 
 ```env
 # The base URL of your backend API
-NEXT_PUBLIC_BASE_URL=http://localhost:8080/api
+NEXT_PUBLIC_BASE_URL=
 
 # The URL of this frontend application (used for copying links)
-NEXT_PUBLIC_FE_URL=http://localhost:3000
+NEXT_PUBLIC_FE_URL=
 ```
 
 ### 4\. Run the project locally
