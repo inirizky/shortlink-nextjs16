@@ -62,6 +62,9 @@ export default function ShortLinkForm({
       }
       onOpenChange?.(false)
     },
+    onError: (error) => {
+      toast.error(error?.message || "Failed to create link")
+    }
   })
   const { mutate: edit } = useMutation({
     mutationFn: (data: z.infer<typeof createShortLinkSchema>) => {
@@ -74,6 +77,9 @@ export default function ShortLinkForm({
       form.reset()
       onOpenChange?.(false)
     },
+    onError: (error) => {
+      toast.error(error?.message || "Failed to update link")
+    }
   })
 
 
@@ -105,9 +111,9 @@ export default function ShortLinkForm({
             name="url"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Paste your link here</FormLabel>
+                <FormLabel>{isEditMode ? "Original Link" : "Paste your link here"}</FormLabel>
                 <FormControl>
-                  <Input placeholder="https://google.com/" {...field} />
+                  <Input disabled={isEditMode} placeholder="https://google.com/" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

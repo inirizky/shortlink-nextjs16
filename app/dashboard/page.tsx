@@ -38,7 +38,6 @@ export default function Page() {
     staleTime: 1000 * 60 * 5, // 5 menit, data dianggap fresh
   });
 
-  console.log(data);
 
   function handleEditDialog() {
     setShowEditDialog(!showEditDialog)
@@ -119,10 +118,6 @@ export default function Page() {
                           </div>
                         </TableCell>
                         <TableCell>
-
-
-
-
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" className="h-8 w-8 p-0">

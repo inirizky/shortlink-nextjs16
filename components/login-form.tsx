@@ -67,6 +67,7 @@ export function LoginForm({ className,
 
   }
 
+  const { isSubmitting } = form.formState;
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -124,7 +125,7 @@ export function LoginForm({ className,
                 />
 
                 {/* Submit */}
-                <Button type="submit" className="w-full">
+                <Button disabled={isSubmitting} type="submit" className="w-full">
                   Login
                 </Button>
 
